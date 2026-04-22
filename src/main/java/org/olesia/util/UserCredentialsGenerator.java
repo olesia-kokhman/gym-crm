@@ -1,5 +1,8 @@
-package org.olesia.model;
+package org.olesia.util;
 
+import org.olesia.model.Trainee;
+import org.olesia.model.Trainer;
+import org.olesia.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
