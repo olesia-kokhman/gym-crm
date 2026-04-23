@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StorageInitializationTest {
+class StorageBeanPostProcessorTest {
 
     @Test
     void storage_ShouldBeInitializedFromFile_OnContextStart() {
