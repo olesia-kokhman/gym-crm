@@ -1,22 +1,16 @@
 package org.olesia.model;
 
-public class Trainer {
-    private String specialization;
-    private User user;
+import java.util.UUID;
 
-    public String getSpecialization() {
+public class Trainer extends User {
+    private TrainingType specialization;
+
+    public TrainingType getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(TrainingType specialization) {
         this.specialization = specialization;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

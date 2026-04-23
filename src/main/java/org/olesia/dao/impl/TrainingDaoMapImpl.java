@@ -3,7 +3,6 @@ package org.olesia.dao.impl;
 import org.olesia.dao.TrainingDao;
 import org.olesia.model.Training;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -14,35 +13,34 @@ public class TrainingDaoMapImpl implements TrainingDao {
     private Map<UUID, Training> trainingStorage;
 
     @Autowired
-    @Qualifier("trainingStorage")
-    public void setTrainingStorage(Map<UUID, Training> trainingStorage) {
-        this.trainingStorage = trainingStorage;
+    @SuppressWarnings("unchecked")
+    public void setStorage(Map<String, Map<UUID, Object>> storage) {
+        this.trainingStorage = (Map<UUID, Training>) (Map<?, ?>) storage.get("training");
     }
 
     private void validate(Training training) {
-        if(training == null) {
+        if (training == null) {
             throw new IllegalArgumentException("Training must not be null");
         }
 
-        if(training.getId() == null) {
+        if (training.getId() == null) {
             throw new IllegalArgumentException("Training id must not be null");
         }
 
-        if(training.getTraineeId() == null) {
-            throw new IllegalArgumentException("Trainee must not be null");
+        if (training.getTraineeId() == null) {
+            throw new IllegalArgumentException("Training traineeId must not be null");
         }
 
-        if(training.getTrainerId() == null) {
-            throw new IllegalArgumentException("Trainer must not be null");
+        if (training.getTrainerId() == null) {
+            throw new IllegalArgumentException("Training trainerId must not be null");
         }
     }
 
     @Override
     public Training save(Training training) {
-
         validate(training);
 
-        if(trainingStorage.containsKey(training.getId())) {
+        if (trainingStorage.containsKey(training.getId())) {
             throw new IllegalArgumentException("Training with id " + training.getId() + " already exists");
         }
 

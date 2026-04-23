@@ -16,17 +16,11 @@ import java.util.UUID;
 public class StorageConfig {
 
     @Bean
-    public Map<UUID, Trainee> traineeStorage() {
-        return new HashMap<>();
-    }
-
-    @Bean
-    public Map<UUID, Trainer> trainerStorage() {
-        return new HashMap<>();
-    }
-
-    @Bean
-    public Map<UUID, Training> trainingStorage() {
-        return new HashMap<>();
+    public Map<String, Map<UUID, Object>> storage() {
+        Map<String, Map<UUID, Object>> storage = new HashMap<>();
+        storage.put("trainee", new HashMap<>());
+        storage.put("trainer", new HashMap<>());
+        storage.put("training", new HashMap<>());
+        return storage;
     }
 }

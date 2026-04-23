@@ -14,9 +14,9 @@ public class TraineeDaoMapImpl implements TraineeDao {
     private Map<UUID, Trainee> traineeStorage;
 
     @Autowired
-    @Qualifier("traineeStorage")
-    public void setTraineeStorage(Map<UUID, Trainee> traineeStorage) {
-        this.traineeStorage = traineeStorage;
+    @SuppressWarnings("unchecked")
+    public void setStorage(Map<String, Map<UUID, Object>> storage) {
+        this.traineeStorage = (Map<UUID, Trainee>) (Map<?, ?>) storage.get("trainee");
     }
 
     private void validate(Trainee trainee) {
@@ -24,22 +24,17 @@ public class TraineeDaoMapImpl implements TraineeDao {
             throw new IllegalArgumentException("Trainee must not be null");
         }
 
-        if (trainee.getUser() == null) {
-            throw new IllegalArgumentException("User must not be null");
-        }
-
-        if (trainee.getUser().getId() == null) {
-            throw new IllegalArgumentException("User id must not be null");
+        if (trainee.getId() == null) {
+            throw new IllegalArgumentException("Trainee userId must not be null");
         }
     }
 
     @Override
     public Trainee save(Trainee trainee) {
-
         validate(trainee);
 
-        UUID traineeId = trainee.getUser().getId();
-        if(traineeStorage.containsKey(traineeId)) {
+        UUID traineeId = trainee.getId();
+        if (traineeStorage.containsKey(traineeId)) {
             throw new IllegalArgumentException("Trainee with id " + traineeId + " already exists");
         }
 
@@ -49,22 +44,20 @@ public class TraineeDaoMapImpl implements TraineeDao {
 
     @Override
     public Trainee update(Trainee trainee) {
-
         validate(trainee);
 
-        UUID traineeId = trainee.getUser().getId();
-        if(!traineeStorage.containsKey(traineeId)) {
+        UUID traineeId = trainee.getId();
+        if (!traineeStorage.containsKey(traineeId)) {
             throw new IllegalArgumentException("Trainee with id " + traineeId + " does not exist");
         }
 
         traineeStorage.put(traineeId, trainee);
         return trainee;
-
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!traineeStorage.containsKey(id)) {
+        if (!traineeStorage.containsKey(id)) {
             throw new IllegalArgumentException("Trainee with id " + id + " does not exist");
         }
 

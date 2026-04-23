@@ -3,7 +3,6 @@ package org.olesia.dao.impl;
 import org.olesia.dao.TrainerDao;
 import org.olesia.model.Trainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -14,34 +13,28 @@ public class TrainerDaoMapImpl implements TrainerDao {
     private Map<UUID, Trainer> trainerStorage;
 
     @Autowired
-    @Qualifier("trainerStorage")
-    public void setTrainerStorage(Map<UUID, Trainer> trainerStorage) {
-        this.trainerStorage = trainerStorage;
+    @SuppressWarnings("unchecked")
+    public void setStorage(Map<String, Map<UUID, Object>> storage) {
+        this.trainerStorage = (Map<UUID, Trainer>) (Map<?, ?>) storage.get("trainer");
     }
 
     private void validate(Trainer trainer) {
-        if(trainer == null) {
+        if (trainer == null) {
             throw new IllegalArgumentException("Trainer must not be null");
         }
 
-        if(trainer.getUser() == null) {
-            throw new IllegalArgumentException("User must not be null");
+        if (trainer.getId() == null) {
+            throw new IllegalArgumentException("Trainer userId must not be null");
         }
-
-        if(trainer.getUser().getId() == null) {
-            throw new IllegalArgumentException("Trainer id must not be null");
-        }
-
     }
 
     @Override
     public Trainer save(Trainer trainer) {
-
         validate(trainer);
 
-        UUID trainerId = trainer.getUser().getId();
+        UUID trainerId = trainer.getId();
 
-        if(trainerStorage.containsKey(trainerId)) {
+        if (trainerStorage.containsKey(trainerId)) {
             throw new IllegalArgumentException("Trainer with id " + trainerId + " already exists");
         }
 
@@ -53,9 +46,9 @@ public class TrainerDaoMapImpl implements TrainerDao {
     public Trainer update(Trainer trainer) {
         validate(trainer);
 
-        UUID trainerId = trainer.getUser().getId();
+        UUID trainerId = trainer.getId();
 
-        if(!trainerStorage.containsKey(trainerId)) {
+        if (!trainerStorage.containsKey(trainerId)) {
             throw new IllegalArgumentException("Trainer with id " + trainerId + " does not exist");
         }
 
