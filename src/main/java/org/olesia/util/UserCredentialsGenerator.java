@@ -14,19 +14,14 @@ import java.util.UUID;
 @Component
 public class UserCredentialsGenerator {
 
-    private  Map<UUID, Trainer> trainerStorage;
-    private  Map<UUID, Trainee> traineeStorage;
+    private Map<UUID, Trainer> trainerStorage;
+    private Map<UUID, Trainee> traineeStorage;
 
     @Autowired
-    @Qualifier("traineeStorage")
-    public void setTraineeStorage(Map<UUID, Trainee> traineeStorage) {
-        this.traineeStorage = traineeStorage;
-    }
-
-    @Autowired
-    @Qualifier("trainerStorage")
-    public void setTrainerStorage(Map<UUID, Trainer> trainerStorage) {
-        this.trainerStorage = trainerStorage;
+    @SuppressWarnings("unchecked")
+    public void setStorage(Map<String, Map<UUID, Object>> storage) {
+        this.traineeStorage = (Map<UUID, Trainee>) (Map<?, ?>) storage.get("trainee");
+        this.trainerStorage = (Map<UUID, Trainer>) (Map<?, ?>) storage.get("trainer");
     }
 
     public String generateUsername(User user) {
@@ -40,13 +35,13 @@ public class UserCredentialsGenerator {
         }
 
         long traineeNumber= traineeStorage.values().stream().filter(u -> {
-            return user.getFirstName().equals(u.getUser().getFirstName())
-                    && user.getLastName().equals(u.getUser().getLastName());
+            return user.getFirstName().equals(u.getFirstName())
+                    && user.getLastName().equals(u.getLastName());
         }).count();
 
         long trainerNumber = trainerStorage.values().stream().filter(u -> {
-            return user.getFirstName().equals(u.getUser().getFirstName())
-                    && user.getLastName().equals(u.getUser().getLastName());
+            return user.getFirstName().equals(u.getFirstName())
+                    && user.getLastName().equals(u.getLastName());
         }).count();
 
         String username = user.getFirstName() + "." + user.getLastName();

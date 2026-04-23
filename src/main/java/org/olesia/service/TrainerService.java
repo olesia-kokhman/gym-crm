@@ -1,16 +1,18 @@
 package org.olesia.service;
 
-import org.olesia.dao.TrainerDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.olesia.model.Trainer;
 
-@Service
-public class TrainerService {
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-    private TrainerDao trainerDao;
+public interface TrainerService {
 
-    @Autowired
-    public void setTrainerDao(TrainerDao trainerDao) {
-        this.trainerDao = trainerDao;
-    }
+    Trainer create(Trainer trainer);
+
+    Trainer update(Trainer trainer);
+
+    Optional<Trainer> findById(UUID id);
+
+    List<Trainer> findAll();
 }
