@@ -2,6 +2,7 @@ package org.olesia.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Training {
@@ -68,5 +69,20 @@ public class Training {
 
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Training training = (Training) o;
+        return Objects.equals(id, training.id) && Objects.equals(traineeId, training.traineeId)
+                && Objects.equals(trainerId, training.trainerId) && Objects.equals(name, training.name)
+                && Objects.equals(type, training.type) && Objects.equals(dateTime, training.dateTime)
+                && Objects.equals(duration, training.duration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, traineeId, trainerId, name, type, dateTime, duration);
     }
 }

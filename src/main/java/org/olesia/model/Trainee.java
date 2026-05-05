@@ -1,6 +1,7 @@
 package org.olesia.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Trainee extends User {
 
@@ -23,4 +24,15 @@ public class Trainee extends User {
         this.address = address;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Trainee trainee = (Trainee) o;
+        return Objects.equals(dateOfBirth, trainee.dateOfBirth) && Objects.equals(address, trainee.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dateOfBirth, address);
+    }
 }
